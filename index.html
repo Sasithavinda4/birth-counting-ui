@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Time Since Birth Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f4f8;
+    }
+    h1 {
+      color: #333;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .results {
+      margin-top: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Time Since Birth Calculator</h1>
+  <label for="birthDateTime">Enter your birthdate and time:</label><br>
+  <input type="datetime-local" id="birthDateTime">
+  <button onclick="calculateTime()">Calculate</button>
+
+  <div class="results" id="results" style="display: none;"></div>
+
+  <script>
+    function calculateTime() {
+      const input = document.getElementById('birthDateTime').value;
+      if (!input) {
+        alert("Please enter your birthdate and time.");
+        return;
+      }
+
+      const birthDateTime = new Date(input);
+      const now = new Date();
+
+      if (birthDateTime > now) {
+        alert("Birthdate cannot be in the future.");
+        return;
+      }
+
+      const durationMillis = now - birthDateTime;
+      const seconds = Math.floor(durationMillis / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      const weeks = Math.floor(days / 7);
+
+      const birth = birthDateTime;
+      const current = now;
+
+      let years = current.getFullYear() - birth.getFullYear();
+      let months = current.getMonth() - birth.getMonth();
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+      const totalMonths = years * 12 + months;
+      const decades = years / 10;
+      const centuries = years / 100;
+
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('results').innerHTML = `
+        <strong>Time since your birth:</strong><br>
+        Seconds: ${seconds.toLocaleString()}<br>
+        Minutes: ${minutes.toLocaleString()}<br>
+        Hours: ${hours.toLocaleString()}<br>
+        Days: ${days.toLocaleString()}<br>
+        Weeks: ${weeks.toLocaleString()}<br>
+        Months: ${totalMonths}<br>
+        Years: ${years}<br>
+        Decades: ${decades.toFixed(2)}<br>
+        Centuries: ${centuries.toFixed(4)}
+      `;
+    }
+  </script>
+
+</body>
+</html>
